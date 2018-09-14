@@ -28,7 +28,8 @@ exports.put = (req, res) => {
 }
 
 exports.delete = (req, res) => {
-    Task.findByIdAndRemove(req.params).then((results)  => {
+    console.log(req.query);
+    Task.findByIdAndRemove(req.query._id).then((results)  => {
         res.sendStatus(200);
     }).catch( (error) => {
         console.log('Error: ', error);

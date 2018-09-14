@@ -6,3 +6,5 @@ router.get('/', taskcontroller.get);
 router.post('/', taskcontroller.post);
 router.put('/', taskcontroller.put);
 router.delete('/', taskcontroller.delete);
+
+module.exports = router;
