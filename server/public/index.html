@@ -18,8 +18,8 @@
         <div class="tabs col-md-2">
             <h1>Your Lists</h1>
             <div class="tablink">
-                    <button ng-click="vm.getTasks(); vm.currentList = 'All'">All</button>
-                </div>
+                <button ng-click="vm.getTasks(); vm.currentList = 'All'">All</button>
+            </div>
             <div class="tablink">
                 <button ng-click="vm.getTasksByListButton()">Work</button>
             </div>
@@ -41,6 +41,7 @@
             <div class="row">
                 <span class="col-sm-6 openInput">{{vm.currentList}}</span>
                 <button ng-click="vm.sweetAlert()" class="btn btn-success col-md-6 openInput">New Task</button>
+                <input type="text" placeholder="searchText" ng-model="vm.search.category">
             </div>
             <table class="col-md-12 table table-dark">
                 <thead>
@@ -54,7 +55,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="task in vm.tasks" ng-class="{success: task.complete, warning: task.editBool}">
+                    <tr ng-repeat="task in vm.tasks | filter: vm.search" ng-class="{success: task.complete, warning: task.editBool}">
                         <td><input type="checkbox" ng-change="vm.editCompleted(task)" ng-model="task.complete"></td>
                         <td><span ng-hide="task.editBool">{{task.due | date: MMMM}}</span><input ng-show="task.editBool"
                                 type="date" ng-model="task.due"></td>
