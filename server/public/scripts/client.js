@@ -6,7 +6,7 @@ taskApp.controller('TaskController', ['$http', function ($http) {
     vm.newTask = {};
     vm.lists = [];
     vm.newList = {};
-
+    vm.currentList = 'Work';
     vm.getTasks = function () {
         $http.get('/tasks').then(function (response) {
             vm.tasks = response.data;
@@ -118,6 +118,9 @@ taskApp.controller('TaskController', ['$http', function ($http) {
                 alert('Error posting list to database.')
             })
         })
+    }
+    vm.getTasksByList = function() {
+        vm.currentList = event.currentTarget.innerHTML;
     }
     vm.getLists();
 }])
