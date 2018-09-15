@@ -212,7 +212,6 @@ taskApp.controller('TaskController', ['$http', function ($http) {
     }
 
     vm.compareDates = function(taskDueDate){
-        console.log('in compare');
         let taskDate = new Date(taskDueDate)
         if (taskDate.getTime() < vm.todaysDate.getTime()){
             return true;

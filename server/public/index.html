@@ -55,7 +55,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="task in vm.tasks | filter: vm.search" ng-class="{success: task.complete, warning: task.editBool, pastdue: vm.compareDates(task.due)}">
+                    <tr ng-repeat="task in vm.tasks | orderBy: '-complete' : true| filter: vm.search" ng-class="{success: task.complete, warning: task.editBool, pastdue: vm.compareDates(task.due)}">
                         <td><input type="checkbox" ng-change="vm.editCompleted(task)" ng-model="task.complete"></td>
                         <td><span ng-hide="task.editBool">{{task.due | date: MMMM}}</span><input ng-show="task.editBool"
                                 type="date" ng-model="task.due"></td>

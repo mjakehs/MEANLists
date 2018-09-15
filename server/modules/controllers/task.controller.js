@@ -1,7 +1,6 @@
 const Task = require('../models/task.model');
 
 exports.get = (req, res) => {
-    console.log(req.query);
     Task.find(req.query).then((results)  => {
         res.send(results);
     }).catch( (error) => {
@@ -29,7 +28,6 @@ exports.put = (req, res) => {
 }
 
 exports.delete = (req, res) => {
-    console.log(req.query);
     Task.findByIdAndRemove(req.query._id).then((results)  => {
         res.sendStatus(200);
     }).catch( (error) => {
@@ -39,7 +37,6 @@ exports.delete = (req, res) => {
 }
 
 exports.deleteByListName = (req, res) => {
-    console.log(req.query);
     Task.deleteMany(req.query).then((results)  => {
         res.sendStatus(200);
     }).catch( (error) => {
