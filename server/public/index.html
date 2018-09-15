@@ -19,24 +19,24 @@
         <input type="text" ng-model="vm.newTask.category"/>
         <input type="submit">
     </form>
-    <table>
+    <table class="table">
         <thead>
             <tr>
-                <th>Edit</th>
                 <th>Complete</th>
-                <th>Task</th>
                 <th>Due Date</th>
+                <th>Task</th>
                 <th>Category</th>
+                <th>Edit</th>
                 <th>Delete</th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat="task in vm.tasks">
+                <td><span ng-hide="task.editBool">{{task.complete}}</span><input ng-show="task.editBool" type="checkbox" ng-model="task.complete"></td>
+                <td><span ng-hide="task.editBool">{{task.due | date: MMMM}}</span><input ng-show="task.editBool" type="date" ng-model="task.due"></td>
+                <td><span ng-hide="task.editBool">{{task.task}}</span><input ng-show="task.editBool" type="text" ng-model="task.task"></td>
+                <td><span ng-hide="task.editBool">{{task.category}}</span><input ng-show="task.editBool" type="text" ng-model="task.category"></td>
                 <td><button ng-click="vm.editTask(task)">Edit</button></td>
-                <td>{{task.complete}}</td>
-                <td>{{task.task}}</td>
-                <td>{{task.due}}</td>
-                <td>{{task.category}}</td>
                 <td><button ng-click="vm.deleteTask(task)">Delete</button></td>
             </tr>
         </tbody>

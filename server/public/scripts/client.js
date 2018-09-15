@@ -36,12 +36,18 @@ taskApp.controller('TaskController', ['$http', function($http){
     }
 
     vm.editTask = function(task){
-        $http.put('/tasks', task).then( function(response) {
-            console.log(response);
-            vm.getTasks();
-        }).catch(function(error){
-            alert('Error editing task.')
-        })  
+        if (task.editBool){
+            $http.put('/tasks', task).then( function(response) {
+                console.log(response);
+                vm.getTasks();
+                task.editBool = false;
+            }).catch(function(error){
+                alert('Error editing task.')
+            })  
+        }
+        else {
+            task.editBool = true;
+        }
     }
 
     vm.getTasks();
