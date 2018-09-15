@@ -1,3 +1,7 @@
+body {
+    background-color: lightblue;
+}
+
 .success {
     background-color: #00C851;
 }
@@ -8,4 +12,32 @@
 
 h1 {
     text-align: center;
+}
+
+.tabs {
+    float: left;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+    height: 100vh;
+}
+
+.tabs button {
+    display: block;
+    background-color: inherit;
+    color: black;
+    width: 100%;
+    outline: none;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+    height: 50px;
+}
+
+.row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+table {
+    margin-top: 5%;
 }
