@@ -4,7 +4,7 @@ taskApp.controller('TaskController', ['$http', function ($http) {
     let vm = this;
     vm.tasks = [];
     vm.newTask = {};
-
+    vm.tabs = ['Work', 'Personal'];
     vm.getTasks = function () {
         $http.get('/tasks').then(function (response) {
             vm.tasks = response.data;
@@ -91,4 +91,17 @@ taskApp.controller('TaskController', ['$http', function ($http) {
             })
         })
     }
+    vm.newList = function() {
+        swal({
+            text: 'New List',
+            content: 'input',
+            button: {
+                text: 'Submit',
+                closemodal: false,
+            },
+        }).then(function(response){
+            vm.tabs.push(response);
+            console.log(vm.tabs);
+    })
+}
 }])
