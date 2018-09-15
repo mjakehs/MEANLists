@@ -1,7 +1,8 @@
 const Task = require('../models/task.model');
 
 exports.get = (req, res) => {
-    Task.find({}).then((results)  => {
+    console.log(req.query);
+    Task.find(req.query).then((results)  => {
         res.send(results);
     }).catch( (error) => {
         console.log('Error: ', error);

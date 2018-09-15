@@ -7,8 +7,14 @@ taskApp.controller('TaskController', ['$http', function ($http) {
     vm.lists = [];
     vm.newList = {};
     vm.currentList = 'Work';
+
     vm.getTasks = function () {
-        $http.get('/tasks').then(function (response) {
+        $http({
+            method: 'GET',
+            url: '/tasks',
+            params: { memberlist: vm.currentList }
+        }
+        ).then(function (response) {
             vm.tasks = response.data;
         }).catch(function (error) {
             alert('Error getting tasks from server.')
@@ -24,6 +30,7 @@ taskApp.controller('TaskController', ['$http', function ($http) {
     }
 
     vm.addTask = function () {
+        vm.newTask.memberlist = vm.currentList;
         $http.post('/tasks', vm.newTask).then(function (response) {
             console.log(response);
             vm.getTasks();
@@ -39,26 +46,26 @@ taskApp.controller('TaskController', ['$http', function ($http) {
             icon: "warning",
             buttons: true,
             dangerMode: true,
-          })
-          .then((willDelete) => {
-            if (willDelete) {
-              swal("Task successfully deleted.", {
-                icon: "success",
-              });
-              $http({
-                method: 'DELETE',
-                url: '/tasks',
-                params: _id
-            }).then(function (response) {
-                console.log(response);
-                vm.getTasks();
-            }).catch(function (error) {
-                alert('Error deleting task from database.')
-            })
-            } else {
-              swal("Task has not been deleted.");
-            }
-          });
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    swal("Task successfully deleted.", {
+                        icon: "success",
+                    });
+                    $http({
+                        method: 'DELETE',
+                        url: '/tasks',
+                        params: _id
+                    }).then(function (response) {
+                        console.log(response);
+                        vm.getTasks();
+                    }).catch(function (error) {
+                        alert('Error deleting task from database.')
+                    })
+                } else {
+                    swal("Task has not been deleted.");
+                }
+            });
     }
     vm.editCompleted = function (task) {
         $http.put('/tasks', task).then(function (response) {
@@ -142,7 +149,9 @@ taskApp.controller('TaskController', ['$http', function ($http) {
 
     }
     vm.getTasksByList = function () {
+        console.log('in get tasks');
         vm.currentList = event.currentTarget.innerHTML;
+        vm.getTasks();
     }
     vm.getLists();
 }])
