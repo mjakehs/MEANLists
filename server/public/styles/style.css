@@ -1,5 +1,5 @@
 body {
-    background-color: #232b2b;
+    background-color: #3E4551;
 }
 
 .success {
@@ -17,7 +17,7 @@ h1 {
 .tabs {
     float: left;
     border: 2px solid white;
-    background-color: #1B1B1B;
+    background-color: #1C2331;
     height: 100vh;
     color: white;
 }
@@ -46,10 +46,7 @@ h1 {
     margin-right: 0;
 }
 
-table {
-    margin-top: 5%;
-}
-
 .openInput {
-    margin-top: 40px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }

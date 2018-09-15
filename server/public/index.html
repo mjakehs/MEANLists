@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="col-md-8 offset-md-1">
-            <button ng-click="vm.sweetAlert()" class="btn btn-warning col-md-4 offset-md-4 openInput">New Task</button>
+            <button ng-click="vm.sweetAlert()" class="btn btn-success col-md-4 offset-md-4 openInput">New Task</button>
             <table class="col-md-12 table table-dark">
                 <thead>
                     <tr>
@@ -42,16 +42,15 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="task in vm.tasks" ng-class="{success: task.complete, warning: task.editBool}">
-                        <td><span ng-hide="task.editBool">{{task.complete}}</span><input ng-show="task.editBool" type="checkbox"
-                                ng-model="task.complete"></td>
+                        <td><input type="checkbox" ng-change="vm.editCompleted(task)" ng-model="task.complete"></td>
                         <td><span ng-hide="task.editBool">{{task.due | date: MMMM}}</span><input ng-show="task.editBool"
                                 type="date" ng-model="task.due"></td>
                         <td><span ng-hide="task.editBool">{{task.task}}</span><input ng-show="task.editBool" type="text"
                                 ng-model="task.task"></td>
                         <td><span ng-hide="task.editBool">{{task.category}}</span><input ng-show="task.editBool" type="text"
                                 ng-model="task.category"></td>
-                        <td><button ng-click="vm.editTask(task)">Edit</button></td>
-                        <td><button ng-click="vm.deleteTask(task)">Delete</button></td>
+                        <td><button class="btn btn-primary" ng-click="vm.editTask(task)">Edit</button></td>
+                        <td><button class="btn btn-danger" ng-click="vm.deleteTask(task)">Delete</button></td>
                     </tr>
                 </tbody>
             </table>

@@ -34,7 +34,14 @@ taskApp.controller('TaskController', ['$http', function ($http) {
             alert('Error deleting task from database.')
         })
     }
-
+    vm.editCompleted = function(task){
+        $http.put('/tasks', task).then(function (response) {
+            console.log(response);
+            vm.getTasks();
+        }).catch(function (error) {
+            alert('Error editing task.')
+        })
+    }
     vm.editTask = function (task) {
         if (task.editBool) {
             $http.put('/tasks', task).then(function (response) {
