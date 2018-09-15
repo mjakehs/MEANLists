@@ -2,14 +2,6 @@ body {
     background-color: #3E4551;
 }
 
-.success {
-    background-color: #00C851;
-}
-
-.warning {
-    background-color: #ffbb33;
-}
-
 h1 {
     text-align: center;
 }
@@ -49,4 +41,16 @@ h1 {
 .openInput {
     margin-top: 20px;
     margin-bottom: 20px;
+}
+
+.pastdue {
+    background-color: red;
+}
+
+.success {
+    background-color: #00C851;
+}
+
+.warning {
+    background-color: #ffbb33;
 }

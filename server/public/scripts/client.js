@@ -8,6 +8,7 @@ taskApp.controller('TaskController', ['$http', function ($http) {
     vm.newList = {};
     vm.currentList = 'All';
     vm.deleteUI = false;
+    vm.todaysDate = new Date;
 
     vm.getTasks = function () {
         $http({
@@ -208,6 +209,17 @@ taskApp.controller('TaskController', ['$http', function ($http) {
     vm.openDeleteUI = function() {
         console.log(vm.deleteUI);
         vm.deleteUI = true;
+    }
+
+    vm.compareDates = function(taskDueDate){
+        console.log('in compare');
+        let taskDate = new Date(taskDueDate)
+        if (taskDate.getTime() < vm.todaysDate.getTime()){
+            return true;
+        }
+        else {
+            return false;
+        }
     }
     vm.getLists();
 }])
