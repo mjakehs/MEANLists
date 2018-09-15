@@ -31,7 +31,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="task in vm.tasks">
+            <tr ng-repeat="task in vm.tasks" ng-class="{success: task.complete, warning: task.editBool}">
                 <td><span ng-hide="task.editBool">{{task.complete}}</span><input ng-show="task.editBool" type="checkbox" ng-model="task.complete"></td>
                 <td><span ng-hide="task.editBool">{{task.due | date: MMMM}}</span><input ng-show="task.editBool" type="date" ng-model="task.due"></td>
                 <td><span ng-hide="task.editBool">{{task.task}}</span><input ng-show="task.editBool" type="text" ng-model="task.task"></td>
