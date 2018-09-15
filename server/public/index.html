@@ -28,22 +28,8 @@
             </div>
         </div>
         <div class="col-md-8 offset-md-1">
-            <form ng-submit="vm.addTask()" class="bg-primary">
-                <div class="form-group offset-md-3">
-                    <label class="col-md-2" for="dateIn">Due Date</label>
-                    <input class="col-md-4" type="date" ng-model="vm.newTask.due" id="dateIn" required />
-                </div>
-                <div class="form-group offset-md-3">
-                    <label class="col-md-2" for="taskIn">Task</label>
-                    <input class="col-md-6" type="text" ng-model="vm.newTask.task" id="taskIn" required />
-                </div>
-                <div class="form-group offset-md-3">
-                    <label class="col-md-2" for="categoryIn">Category</label>
-                    <input class="col-md-4" type="text" ng-model="vm.newTask.category" id="categoryIn" />
-                </div>
-                <input class="offset-md-7" type="submit">
-            </form>
-            <table class="col-md-12">
+            <button ng-click="vm.sweetAlert()" class="btn btn-warning col-md-4 offset-md-4 openInput">New Task</button>
+            <table class="col-md-12 table table-dark">
                 <thead>
                     <tr>
                         <th>Complete</th>

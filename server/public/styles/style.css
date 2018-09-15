@@ -1,5 +1,5 @@
 body {
-    background-color: lightblue;
+    background-color: #232b2b;
 }
 
 .success {
@@ -16,23 +16,31 @@ h1 {
 
 .tabs {
     float: left;
-    border: 1px solid #ccc;
-    background-color: #f1f1f1;
+    border: 2px solid white;
+    background-color: #1B1B1B;
     height: 100vh;
+    color: white;
 }
 
 .tabs button {
     display: block;
     background-color: inherit;
-    color: black;
+    color: white;
     width: 100%;
     outline: none;
+    border: none;
     text-align: center;
     cursor: pointer;
     transition: 0.3s;
     height: 50px;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
 }
 
+.tabs button:hover {
+    background-color: #232b2b;
+    color: white;
+}
 .row {
     margin-left: 0;
     margin-right: 0;
@@ -40,4 +48,8 @@ h1 {
 
 table {
     margin-top: 5%;
+}
+
+.openInput {
+    margin-top: 40px;
 }
