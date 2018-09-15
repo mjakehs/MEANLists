@@ -105,21 +105,27 @@ taskApp.controller('TaskController', ['$http', function ($http) {
         swal({
             text: 'New List',
             content: 'input',
-            button: {
-                text: 'Submit',
-                closemodal: false,
+            buttons: {
+                cancel: 'cancel',
+                submit: { text: 'Submit', closemodal: false },
             },
         }).then(function (response) {
-            vm.newList.name = response;
-            $http.post('/lists', vm.newList).then(function (response) {
-                console.log(response);
-                vm.getLists();
-            }).catch(function (error) {
-                alert('Error posting list to database.')
-            })
+            if (response == null) {
+                return
+            }
+            else {
+                vm.newList.name = response;
+                $http.post('/lists', vm.newList).then(function (response) {
+                    console.log(response);
+                    vm.getLists();
+                }).catch(function (error) {
+                    alert('Error posting list to database.')
+                })
+            }
         })
+
     }
-    vm.getTasksByList = function() {
+    vm.getTasksByList = function () {
         vm.currentList = event.currentTarget.innerHTML;
     }
     vm.getLists();

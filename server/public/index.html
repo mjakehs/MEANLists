@@ -31,8 +31,10 @@
             </div>
         </div>
         <div class="col-md-8 offset-md-1">
-            {{vm.currentList}}
-            <button ng-click="vm.sweetAlert()" class="btn btn-success col-md-4 offset-md-4 openInput">New Task</button>
+            <div class="row">
+                <span class="col-sm-6 openInput">{{vm.currentList}}</span>
+                <button ng-click="vm.sweetAlert()" class="btn btn-success col-md-6 openInput">New Task</button>
+            </div>
             <table class="col-md-12 table table-dark">
                 <thead>
                     <tr>
