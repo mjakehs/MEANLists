@@ -1,4 +1,4 @@
-const Task = require('../models/task.model');
+const List = require('../models/list.model');
 
 exports.get = (req, res) => {
     List.find({}).then((results)  => {
@@ -10,6 +10,7 @@ exports.get = (req, res) => {
 }
 
 exports.post = (req, res) => {
+    console.log('In Post!');
     List.create(req.body).then((results)  => {
         res.sendStatus(200);
     }).catch( (error) => {

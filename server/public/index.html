@@ -17,11 +17,17 @@
     <div class="row no-gutters">
         <div class="tabs col-md-2">
             <h1>Your Lists</h1>
-            <div class="tablink" ng-repeat="tab in vm.tabs">
-                <button>{{tab}}</button>
+            <div class="tablink">
+                <button>Work</button>
+            </div>
+            <div class="tablink">
+                <button>Personal</button>
+            </div>
+            <div class="tablink" ng-repeat="list in vm.lists">
+                <button>{{list.name}}</button>
             </div>
             <div class="tablink bg-success">
-                <button ng-click="vm.newList()">Add a List +</button>
+                <button ng-click="vm.addList()">Add a List +</button>
             </div>
         </div>
         <div class="col-md-8 offset-md-1">
