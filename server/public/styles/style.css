@@ -54,3 +54,24 @@ h1 {
 .warning {
     background-color: #ffbb33;
 }
+
+#importantHeader {
+    font-size: 2em;
+    color: white;
+    text-decoration: underline;
+}
+
+#label {
+    font-size: 1.25em;
+    color: white;
+    font-style: italic;
+}
+
+#search {
+    background-color: #232b2b;
+    color: white;
+}
+
+#searchForm {
+    margin-top: 30px;
+}
