@@ -18,16 +18,23 @@
         <div class="tabs col-md-2">
             <h1>Your Lists</h1>
             <div class="tablink">
-                <button ng-click="vm.getTasksByList()">Work</button>
+                    <button ng-click="vm.getTasks(); vm.currentList = 'All'">All</button>
+                </div>
+            <div class="tablink">
+                <button ng-click="vm.getTasksByListButton()">Work</button>
             </div>
             <div class="tablink">
-                <button ng-click="vm.getTasksByList()">Personal</button>
+                <button ng-click="vm.getTasksByListButton()">Personal</button>
             </div>
             <div class="tablink" ng-repeat="list in vm.lists">
-                <button ng-click="vm.getTasksByList()">{{list.name}}</button>
+                <button class="bg-warning" ng-show="vm.deleteUI" ng-click="vm.deleteList()">{{list.name}}</button>
+                <button ng-hide="vm.deleteUI" ng-click="vm.getTasksByListButton()">{{list.name}}</button>
             </div>
             <div class="tablink bg-success">
                 <button ng-click="vm.addList()">Add a List +</button>
+            </div>
+            <div class="tablink bg-danger">
+                <button ng-click="vm.openDeleteUI()">Delete a List -</button>
             </div>
         </div>
         <div class="col-md-8 offset-md-1">

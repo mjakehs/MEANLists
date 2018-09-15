@@ -6,13 +6,13 @@ taskApp.controller('TaskController', ['$http', function ($http) {
     vm.newTask = {};
     vm.lists = [];
     vm.newList = {};
-    vm.currentList = 'Work';
+    vm.currentList = 'All';
+    vm.deleteUI = false;
 
     vm.getTasks = function () {
         $http({
             method: 'GET',
             url: '/tasks',
-            params: { memberlist: vm.currentList }
         }
         ).then(function (response) {
             vm.tasks = response.data;
@@ -33,7 +33,7 @@ taskApp.controller('TaskController', ['$http', function ($http) {
         vm.newTask.memberlist = vm.currentList;
         $http.post('/tasks', vm.newTask).then(function (response) {
             console.log(response);
-            vm.getTasks();
+            vm.getTasksByList();
         }).catch(function (error) {
             alert('Error posting task to database.')
         })
@@ -58,7 +58,7 @@ taskApp.controller('TaskController', ['$http', function ($http) {
                         params: _id
                     }).then(function (response) {
                         console.log(response);
-                        vm.getTasks();
+                        vm.getTasksByList();
                     }).catch(function (error) {
                         alert('Error deleting task from database.')
                     })
@@ -70,7 +70,12 @@ taskApp.controller('TaskController', ['$http', function ($http) {
     vm.editCompleted = function (task) {
         $http.put('/tasks', task).then(function (response) {
             console.log(response);
-            vm.getTasks();
+            if (currentList = 'All'){
+                vm.getTasks();
+            }
+            else {
+                vm.getTasksByList();
+            }
         }).catch(function (error) {
             alert('Error editing task.')
         })
@@ -79,7 +84,7 @@ taskApp.controller('TaskController', ['$http', function ($http) {
         if (task.editBool) {
             $http.put('/tasks', task).then(function (response) {
                 console.log(response);
-                vm.getTasks();
+                vm.getTasksByList();
                 task.editBool = false;
             }).catch(function (error) {
                 alert('Error editing task.')
@@ -128,12 +133,12 @@ taskApp.controller('TaskController', ['$http', function ($http) {
         swal({
             text: 'New List',
             content: 'input',
-            buttons: {
-                cancel: 'cancel',
-                submit: { text: 'Submit', closemodal: false },
+            button: {
+                text: 'Submit',
+                closemodal: false,
             },
         }).then(function (response) {
-            if (response == null) {
+            if (response == '') {
                 return
             }
             else {
@@ -148,10 +153,61 @@ taskApp.controller('TaskController', ['$http', function ($http) {
         })
 
     }
-    vm.getTasksByList = function () {
+    vm.getTasksByListButton = function () {
         console.log('in get tasks');
         vm.currentList = event.currentTarget.innerHTML;
-        vm.getTasks();
+        $http({
+            method: 'GET',
+            url: '/tasks',
+            params: { memberlist: vm.currentList }
+        }
+        ).then(function (response) {
+            vm.tasks = response.data;
+        }).catch(function (error) {
+            alert('Error getting tasks from server.')
+        })
+    }
+    vm.getTasksByList = function () {
+        console.log('in get tasks');
+        $http({
+            method: 'GET',
+            url: '/tasks',
+            params: { memberlist: vm.currentList }
+        }
+        ).then(function (response) {
+            vm.tasks = response.data;
+        }).catch(function (error) {
+            alert('Error getting tasks from server.')
+        })
+    }
+    vm.deleteList = function() {
+        let listToDelete = event.currentTarget.innerHTML;
+        $http({
+            method: 'DELETE',
+            url: '/lists',
+            params: {name: listToDelete}
+        }).then(function(response){
+            $http({
+                method: 'DELETE',
+                url: '/tasks/listdelete',
+                params: {listmember: listToDelete}
+            }).then(function(response){
+                console.log(response);
+                vm.deleteUI = false;
+                vm.getLists();
+                vm.getTasks();
+                vm.currentList = 'All';
+            }).catch(function (error) {
+                alert('Error deleting tasks from database.')
+            })
+        }).catch(function (error) {
+            alert('Error deleting list from database.')
+        })
+    }
+
+    vm.openDeleteUI = function() {
+        console.log(vm.deleteUI);
+        vm.deleteUI = true;
     }
     vm.getLists();
 }])

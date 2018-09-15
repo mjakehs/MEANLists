@@ -37,3 +37,13 @@ exports.delete = (req, res) => {
         res.sendStatus(500);
     })
 }
+
+exports.deleteByListName = (req, res) => {
+    console.log(req.query);
+    Task.deleteMany(req.query).then((results)  => {
+        res.sendStatus(200);
+    }).catch( (error) => {
+        console.log('Error: ', error);
+        res.sendStatus(500);
+    })
+}

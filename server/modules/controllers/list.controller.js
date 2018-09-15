@@ -21,7 +21,7 @@ exports.post = (req, res) => {
 
 exports.delete = (req, res) => {
     console.log(req.query);
-    List.findByIdAndRemove(req.query._id).then((results)  => {
+    List.deleteOne(req.query).then((results)  => {
         res.sendStatus(200);
     }).catch( (error) => {
         console.log('Error: ', error);
