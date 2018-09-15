@@ -33,16 +33,32 @@ taskApp.controller('TaskController', ['$http', function ($http) {
     }
 
     vm.deleteTask = function (_id) {
-        $http({
-            method: 'DELETE',
-            url: '/tasks',
-            params: _id
-        }).then(function (response) {
-            console.log(response);
-            vm.getTasks();
-        }).catch(function (error) {
-            alert('Error deleting task from database.')
-        })
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this task!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+              swal("Task successfully deleted.", {
+                icon: "success",
+              });
+              $http({
+                method: 'DELETE',
+                url: '/tasks',
+                params: _id
+            }).then(function (response) {
+                console.log(response);
+                vm.getTasks();
+            }).catch(function (error) {
+                alert('Error deleting task from database.')
+            })
+            } else {
+              swal("Task has not been deleted.");
+            }
+          });
     }
     vm.editCompleted = function (task) {
         $http.put('/tasks', task).then(function (response) {
