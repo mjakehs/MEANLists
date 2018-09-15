@@ -6,7 +6,7 @@ taskApp.controller('TaskController', ['$http', function ($http) {
     vm.newTask = {};
     vm.lists = [];
     vm.newList = {};
-    vm.currentList = 'All';
+    vm.currentList = 'All Tasks';
     vm.deleteUI = false;
     vm.todaysDate = new Date;
 
@@ -71,7 +71,7 @@ taskApp.controller('TaskController', ['$http', function ($http) {
     vm.editCompleted = function (task) {
         $http.put('/tasks', task).then(function (response) {
             console.log(response);
-            if (currentList = 'All'){
+            if (currentList = 'All Tasks'){
                 vm.getTasks();
             }
             else {
@@ -197,7 +197,7 @@ taskApp.controller('TaskController', ['$http', function ($http) {
                 vm.deleteUI = false;
                 vm.getLists();
                 vm.getTasks();
-                vm.currentList = 'All';
+                vm.currentList = 'All Tasks';
             }).catch(function (error) {
                 alert('Error deleting tasks from database.')
             })
