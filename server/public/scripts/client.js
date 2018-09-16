@@ -34,7 +34,12 @@ taskApp.controller('TaskController', ['$http', function ($http) {
         vm.newTask.memberlist = vm.currentList;
         $http.post('/tasks', vm.newTask).then(function (response) {
             console.log(response);
-            vm.getTasksByList();
+            if (vm.currentList == 'All Tasks') {
+                vm.getTasks();
+            }
+            else {
+                vm.getTasksByList();
+            }
         }).catch(function (error) {
             alert('Error posting task to database.')
         })
@@ -59,7 +64,7 @@ taskApp.controller('TaskController', ['$http', function ($http) {
                         params: _id
                     }).then(function (response) {
                         console.log(response);
-                        if (vm.currentList == 'All Tasks'){
+                        if (vm.currentList == 'All Tasks') {
                             vm.getTasks();
                         }
                         else {
@@ -76,7 +81,7 @@ taskApp.controller('TaskController', ['$http', function ($http) {
     vm.editCompleted = function (task) {
         $http.put('/tasks', task).then(function (response) {
             console.log(response);
-            if (currentList = 'All Tasks'){
+            if (currentList = 'All Tasks') {
                 vm.getTasks();
             }
             else {
@@ -89,141 +94,156 @@ taskApp.controller('TaskController', ['$http', function ($http) {
     vm.editTask = function (task) {
         if (task.editBool) {
             $http.put('/tasks', task).then(function (response) {
-                console.log(response);
-                vm.getTasksByList();
+                if (vm.currentList == 'All Tasks') {
+                    vm.getTasks();
+                }
+                else {
+                    vm.getTasksByList();
+                }
                 task.editBool = false;
-            }).catch(function (error) {
-                alert('Error editing task.')
-            })
+        }).catch(function (error) {
+            alert('Error editing task.')
+        })
         }
         else {
-            task.editBool = true;
-        }
+    task.editBool = true;
+}
     }
-    vm.getTasks();
+vm.getTasks();
 
-    vm.sweetAlert = function () {
+vm.sweetAlert = function () {
+    swal({
+        text: 'Set Task',
+        content: 'input',
+        button: {
+            text: 'Next',
+            closemodal: false,
+        },
+    }).then(function (response) {
+        vm.newTask.task = response;
         swal({
-            text: 'Set Task',
+            text: 'Set Due Date',
             content: 'input',
             button: {
                 text: 'Next',
                 closemodal: false,
-            },
+            }
         }).then(function (response) {
-            vm.newTask.task = response;
+            vm.newTask.due = response;
             swal({
-                text: 'Set Due Date',
+                text: 'Set a Category',
                 content: 'input',
                 button: {
-                    text: 'Next',
+                    text: 'Submit',
                     closemodal: false,
                 }
             }).then(function (response) {
-                vm.newTask.due = response;
-                swal({
-                    text: 'Set a Category',
-                    content: 'input',
-                    button: {
-                        text: 'Submit',
-                        closemodal: false,
-                    }
-                }).then(function (response) {
-                    vm.newTask.category = response;
-                    vm.addTask();
-                })
+                vm.newTask.category = response;
+                vm.addTask();
             })
         })
-    }
-    vm.addList = function () {
-        swal({
-            text: 'New List',
-            content: 'input',
-            button: {
-                text: 'Submit',
-                closemodal: false,
-            },
-        }).then(function (response) {
-            if (response == '') {
-                return
-            }
-            else {
-                vm.newList.name = response;
-                $http.post('/lists', vm.newList).then(function (response) {
-                    console.log(response);
-                    vm.getLists();
-                }).catch(function (error) {
-                    alert('Error posting list to database.')
-                })
-            }
-        })
-
-    }
-    vm.getTasksByListButton = function () {
-        console.log('in get tasks');
-        vm.currentList = event.currentTarget.innerHTML;
-        $http({
-            method: 'GET',
-            url: '/tasks',
-            params: { memberlist: vm.currentList }
-        }
-        ).then(function (response) {
-            vm.tasks = response.data;
-        }).catch(function (error) {
-            alert('Error getting tasks from server.')
-        })
-    }
-    vm.getTasksByList = function () {
-        console.log('in get tasks');
-        $http({
-            method: 'GET',
-            url: '/tasks',
-            params: { memberlist: vm.currentList }
-        }
-        ).then(function (response) {
-            vm.tasks = response.data;
-        }).catch(function (error) {
-            alert('Error getting tasks from server.')
-        })
-    }
-    vm.deleteList = function() {
-        let listToDelete = event.currentTarget.innerHTML;
-        $http({
-            method: 'DELETE',
-            url: '/lists',
-            params: {name: listToDelete}
-        }).then(function(response){
-            $http({
-                method: 'DELETE',
-                url: '/tasks/listdelete',
-                params: {memberlist: listToDelete}
-            }).then(function(response){
-                console.log(response);
-                vm.deleteUI = false;
-                vm.getLists();
-                vm.getTasks();
-                vm.currentList = 'All Tasks';
-            }).catch(function (error) {
-                alert('Error deleting tasks from database.')
-            })
-        }).catch(function (error) {
-            alert('Error deleting list from database.')
-        })
-    }
-
-    vm.openDeleteUI = function() {
-        console.log(vm.deleteUI);
-        vm.deleteUI = true;
-    }
-
-    vm.compareDates = function(taskDueDate){
-        let taskDate = new Date(taskDueDate)
-        if (taskDate.getTime() < vm.todaysDate.getTime()){
-            return true;
+    })
+}
+vm.addList = function () {
+    swal({
+        text: 'New List',
+        content: 'input',
+        button: {
+            text: 'Submit',
+            closemodal: false,
+        },
+    }).then(function (response) {
+        if (response == '') {
+            return
         }
         else {
-            return false;
+            vm.newList.name = response;
+            $http.post('/lists', vm.newList).then(function (response) {
+                console.log(response);
+                vm.getLists();
+            }).catch(function (error) {
+                alert('Error posting list to database.')
+            })
+        }
+    })
+
+}
+vm.getTasksByListButton = function () {
+    vm.currentList = event.currentTarget.innerHTML;
+    $http({
+        method: 'GET',
+        url: '/tasks',
+        params: { memberlist: vm.currentList }
+    }
+    ).then(function (response) {
+        vm.tasks = response.data;
+    }).catch(function (error) {
+        alert('Error getting tasks from server.')
+    })
+}
+vm.getTasksByList = function () {
+    $http({
+        method: 'GET',
+        url: '/tasks',
+        params: { memberlist: vm.currentList }
+    }
+    ).then(function (response) {
+        vm.tasks = response.data;
+    }).catch(function (error) {
+        alert('Error getting tasks from server.')
+    })
+}
+vm.deleteList = function () {
+    let listToDelete = event.currentTarget.innerHTML;
+    $http({
+        method: 'DELETE',
+        url: '/lists',
+        params: { name: listToDelete }
+    }).then(function (response) {
+        $http({
+            method: 'DELETE',
+            url: '/tasks/listdelete',
+            params: { memberlist: listToDelete }
+        }).then(function (response) {
+            console.log(response);
+            vm.deleteUI = false;
+            vm.getLists();
+            vm.getTasks();
+            vm.currentList = 'All Tasks';
+        }).catch(function (error) {
+            alert('Error deleting tasks from database.')
+        })
+    }).catch(function (error) {
+        alert('Error deleting list from database.')
+    })
+}
+
+vm.openDeleteUI = function () {
+    vm.deleteUI = true;
+}
+
+vm.compareDates = function (taskDueDate) {
+    let taskDate = new Date(taskDueDate);
+    if (taskDate.getTime() < vm.todaysDate.getTime()) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+vm.alsoCompareDates = function (taskDueDate) {
+    let taskDate = new Date(taskDueDate);
+    if (taskDate.getFullYear() == vm.todaysDate.getFullYear()) {
+        if (taskDate.getMonth() == vm.todaysDate.getMonth()) {
+            if (taskDate.getDate() == vm.todaysDate.getDate()) {
+                return true;
+            }
         }
     }
-    vm.getLists();
+    else {
+        return false;
+    }
+}
+vm.getLists();
 }])

@@ -48,12 +48,16 @@ h1 {
     background-color: red;
 }
 
+.dateMatch {
+    background-color: #ffbb33;;
+}
+
 .success {
     background-color: #00C851;
 }
 
 .warning {
-    background-color: #ffbb33;
+    background-color: #ad1457;
 }
 
 #importantHeader {
