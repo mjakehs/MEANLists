@@ -41,6 +41,6 @@ exports.deleteByListName = (req, res) => {
         res.sendStatus(200);
     }).catch( (error) => {
         console.log('Error: ', error);
-        res.sendStatus(500);
+        res.sendStatus(500);    
     })
 }

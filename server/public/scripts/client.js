@@ -59,7 +59,12 @@ taskApp.controller('TaskController', ['$http', function ($http) {
                         params: _id
                     }).then(function (response) {
                         console.log(response);
-                        vm.getTasksByList();
+                        if (vm.currentList == 'All Tasks'){
+                            vm.getTasks();
+                        }
+                        else {
+                            vm.getTasksByList();
+                        }
                     }).catch(function (error) {
                         alert('Error deleting task from database.')
                     })
@@ -191,7 +196,7 @@ taskApp.controller('TaskController', ['$http', function ($http) {
             $http({
                 method: 'DELETE',
                 url: '/tasks/listdelete',
-                params: {listmember: listToDelete}
+                params: {memberlist: listToDelete}
             }).then(function(response){
                 console.log(response);
                 vm.deleteUI = false;
