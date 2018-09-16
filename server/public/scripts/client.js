@@ -218,8 +218,8 @@ vm.deleteList = function () {
     })
 }
 
-vm.openDeleteUI = function () {
-    vm.deleteUI = true;
+vm.toggleDeleteUI = function () {
+    vm.deleteUI = !vm.deleteUI;
 }
 
 vm.compareDates = function (taskDueDate) {
