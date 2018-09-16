@@ -85,3 +85,7 @@ table {
     font-family: 'Cookie', cursive;
     font-size: 1.25em;
 }
+
+.tabs button.active {
+    
+}

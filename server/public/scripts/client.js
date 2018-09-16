@@ -245,5 +245,15 @@ vm.alsoCompareDates = function (taskDueDate) {
         return false;
     }
 }
+
+vm.allTasksChecker = function(){
+    if (vm.currentList == 'All Tasks') {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
 vm.getLists();
 }])

@@ -45,7 +45,7 @@
                     <label for="search" id="label">Filter List by Category</label>
                     <input type="text" placeholder="searchText" ng-model="vm.search.category" id="search">
                 </div>
-                <button ng-click="vm.sweetAlert()" class="btn btn-success col-sm-5 openInput">New Task</button>
+                <button ng-click="vm.sweetAlert()" ng-hide="vm.allTasksChecker()" class="btn btn-success col-sm-5 openInput">New Task</button>
             </div>
             <table class="col-md-12 table table-dark">
                 <thead>
