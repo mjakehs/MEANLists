@@ -81,12 +81,12 @@ taskApp.controller('TaskController', ['$http', function ($http) {
     vm.editCompleted = function (task) {
         $http.put('/tasks', task).then(function (response) {
             console.log(response);
-            if (currentList = 'All Tasks') {
+            if (vm.currentList == 'All Tasks') {
                 vm.getTasks();
             }
             else {
                 vm.getTasksByList();
-            }
+            }       
         }).catch(function (error) {
             alert('Error editing task.')
         })
