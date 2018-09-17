@@ -19,17 +19,17 @@
         <div class="tabs col-md-2">
             <h1>Your Lists</h1>
             <div class="tablink">
-                <button ng-click="vm.getTasks(); vm.currentList = 'All Tasks'">All Tasks</button>
+                <button class="tabButton active" ng-click="vm.getTasks(); vm.currentList = 'All Tasks'; vm.changeActiveTab()">All Tasks</button>
             </div>
             <div class="tablink">
-                <button ng-click="vm.getTasksByListButton()">Work</button>
+                <button class="tabButton" ng-click="vm.getTasksByListButton(); vm.changeActiveTab()">Work</button>
             </div>
             <div class="tablink">
-                <button ng-click="vm.getTasksByListButton()">Personal</button>
+                <button class="tabButton" ng-click="vm.getTasksByListButton(); vm.changeActiveTab()">Personal</button>
             </div>
             <div class="tablink" ng-repeat="list in vm.lists">
                 <button class="bg-warning" ng-show="vm.deleteUI" ng-click="vm.deleteList()">{{list.name}}</button>
-                <button ng-hide="vm.deleteUI" ng-click="vm.getTasksByListButton()">{{list.name}}</button>
+                <button class="tabButton" ng-hide="vm.deleteUI" ng-click="vm.getTasksByListButton(); vm.changeActiveTab()">{{list.name}}</button>
             </div>
             <div class="tablink bg-success">
                 <button ng-click="vm.addList()">Add a List +</button>

@@ -254,6 +254,15 @@ vm.allTasksChecker = function(){
         return false;
     }
 }
+vm.changeActiveTab = function(){
+    console.log('in change active');
+    tablinks = document.getElementsByClassName("tabButton");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+        console.log('in loop')
+    }
+    event.currentTarget.className += " active";
 
+}
 vm.getLists();
 }])
