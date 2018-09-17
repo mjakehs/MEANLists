@@ -86,7 +86,7 @@ taskApp.controller('TaskController', ['$http', function ($http) {
             }
             else {
                 vm.getTasksByList();
-            }       
+            }
         }).catch(function (error) {
             alert('Error editing task.')
         })
@@ -101,168 +101,191 @@ taskApp.controller('TaskController', ['$http', function ($http) {
                     vm.getTasksByList();
                 }
                 task.editBool = false;
-        }).catch(function (error) {
-            alert('Error editing task.')
-        })
+            }).catch(function (error) {
+                alert('Error editing task.')
+            })
         }
         else {
-    task.editBool = true;
-}
+            task.editBool = true;
+        }
     }
-vm.getTasks();
+    vm.getTasks();
 
-vm.sweetAlert = function () {
-    swal({
-        text: 'Set Task',
-        content: 'input',
-        button: {
-            text: 'Next',
-            closemodal: false,
-        },
-    }).then(function (response) {
-        vm.newTask.task = response;
+    vm.sweetAlert = function () {
         swal({
-            text: 'Set Due Date',
+            text: 'Set Task',
             content: 'input',
             button: {
                 text: 'Next',
                 closemodal: false,
-            }
+            },
         }).then(function (response) {
-            vm.newTask.due = response;
+            if (response != '') {
+                vm.newTask.task = response;
+                swal({
+                    text: 'Set Due Date',
+                    content: 'input',
+                    button: {
+                        text: 'Next',
+                        closemodal: false,
+                    }
+                }).then(function (response) {
+                    if (response != '') {
+                        vm.newTask.due = response;
+                        swal({
+                            text: 'Set a Category',
+                            content: 'input',
+                            button: {
+                                text: 'Submit',
+                                closemodal: false,
+                            }
+                        }).then(function (response) {
+                            if (response != '') {
+                                vm.newTask.category = response;
+                                vm.addTask();
+                            }
+                            else {
+                                swal('Category input is required.');
+                            }
+                        })
+                    }
+                    else {
+                        swal('Date input is required');
+                    }
+                })
+            }
+            else {
+                swal('Task input is required');
+            }
+        })
+    }
+
+
+        vm.addList = function () {
             swal({
-                text: 'Set a Category',
+                text: 'New List',
                 content: 'input',
                 button: {
                     text: 'Submit',
                     closemodal: false,
-                }
+                },
             }).then(function (response) {
-                vm.newTask.category = response;
-                vm.addTask();
+                if (response == '') {
+                    swal('New list name cannot be empty.');
+                }
+                else if (response.length > 15){
+                    swal('List names must be shorter than 15 characters.');
+                }
+                else if (vm.lists.length > 6){
+                    swal('You cannot have more than 7 user created lists.');
+                }
+                else {
+                    vm.newList.name = response;
+                    $http.post('/lists', vm.newList).then(function (response) {
+                        console.log(response);
+                        vm.getLists();
+                    }).catch(function (error) {
+                        alert('Error posting list to database.')
+                    })
+                }
             })
-        })
-    })
-}
-vm.addList = function () {
-    swal({
-        text: 'New List',
-        content: 'input',
-        button: {
-            text: 'Submit',
-            closemodal: false,
-        },
-    }).then(function (response) {
-        if (response == '') {
-            return
+
         }
-        else {
-            vm.newList.name = response;
-            $http.post('/lists', vm.newList).then(function (response) {
-                console.log(response);
-                vm.getLists();
+        vm.getTasksByListButton = function () {
+            vm.currentList = event.currentTarget.innerHTML;
+            $http({
+                method: 'GET',
+                url: '/tasks',
+                params: { memberlist: vm.currentList }
+            }
+            ).then(function (response) {
+                vm.tasks = response.data;
             }).catch(function (error) {
-                alert('Error posting list to database.')
+                alert('Error getting tasks from server.')
             })
         }
-    })
+        vm.getTasksByList = function () {
+            $http({
+                method: 'GET',
+                url: '/tasks',
+                params: { memberlist: vm.currentList }
+            }
+            ).then(function (response) {
+                vm.tasks = response.data;
+            }).catch(function (error) {
+                alert('Error getting tasks from server.')
+            })
+        }
+        vm.deleteList = function () {
+            let listToDelete = event.currentTarget.innerHTML;
+            $http({
+                method: 'DELETE',
+                url: '/lists',
+                params: { name: listToDelete }
+            }).then(function (response) {
+                $http({
+                    method: 'DELETE',
+                    url: '/tasks/listdelete',
+                    params: { memberlist: listToDelete }
+                }).then(function (response) {
+                    console.log(response);
+                    vm.deleteUI = false;
+                    vm.getLists();
+                    vm.getTasks();
+                    vm.currentList = 'All Tasks';
+                }).catch(function (error) {
+                    alert('Error deleting tasks from database.')
+                })
+            }).catch(function (error) {
+                alert('Error deleting list from database.')
+            })
+        }
 
-}
-vm.getTasksByListButton = function () {
-    vm.currentList = event.currentTarget.innerHTML;
-    $http({
-        method: 'GET',
-        url: '/tasks',
-        params: { memberlist: vm.currentList }
-    }
-    ).then(function (response) {
-        vm.tasks = response.data;
-    }).catch(function (error) {
-        alert('Error getting tasks from server.')
-    })
-}
-vm.getTasksByList = function () {
-    $http({
-        method: 'GET',
-        url: '/tasks',
-        params: { memberlist: vm.currentList }
-    }
-    ).then(function (response) {
-        vm.tasks = response.data;
-    }).catch(function (error) {
-        alert('Error getting tasks from server.')
-    })
-}
-vm.deleteList = function () {
-    let listToDelete = event.currentTarget.innerHTML;
-    $http({
-        method: 'DELETE',
-        url: '/lists',
-        params: { name: listToDelete }
-    }).then(function (response) {
-        $http({
-            method: 'DELETE',
-            url: '/tasks/listdelete',
-            params: { memberlist: listToDelete }
-        }).then(function (response) {
-            console.log(response);
-            vm.deleteUI = false;
-            vm.getLists();
-            vm.getTasks();
-            vm.currentList = 'All Tasks';
-        }).catch(function (error) {
-            alert('Error deleting tasks from database.')
-        })
-    }).catch(function (error) {
-        alert('Error deleting list from database.')
-    })
-}
+        vm.toggleDeleteUI = function () {
+            vm.deleteUI = !vm.deleteUI;
+        }
 
-vm.toggleDeleteUI = function () {
-    vm.deleteUI = !vm.deleteUI;
-}
-
-vm.compareDates = function (taskDueDate) {
-    let taskDate = new Date(taskDueDate);
-    if (taskDate.getTime() < vm.todaysDate.getTime()) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-
-vm.alsoCompareDates = function (taskDueDate) {
-    let taskDate = new Date(taskDueDate);
-    if (taskDate.getFullYear() == vm.todaysDate.getFullYear()) {
-        if (taskDate.getMonth() == vm.todaysDate.getMonth()) {
-            if (taskDate.getDate() == vm.todaysDate.getDate()) {
+        vm.compareDates = function (taskDueDate) {
+            let taskDate = new Date(taskDueDate);
+            if (taskDate.getTime() < vm.todaysDate.getTime()) {
                 return true;
             }
+            else {
+                return false;
+            }
         }
-    }
-    else {
-        return false;
-    }
-}
 
-vm.allTasksChecker = function(){
-    if (vm.currentList == 'All Tasks') {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-vm.changeActiveTab = function(){
-    console.log('in change active');
-    tablinks = document.getElementsByClassName("tabButton");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-        console.log('in loop')
-    }
-    event.currentTarget.className += " active";
+        vm.alsoCompareDates = function (taskDueDate) {
+            let taskDate = new Date(taskDueDate);
+            if (taskDate.getFullYear() == vm.todaysDate.getFullYear()) {
+                if (taskDate.getMonth() == vm.todaysDate.getMonth()) {
+                    if (taskDate.getDate() == vm.todaysDate.getDate()) {
+                        return true;
+                    }
+                }
+            }
+            else {
+                return false;
+            }
+        }
 
-}
-vm.getLists();
-}])
+        vm.allTasksChecker = function () {
+            if (vm.currentList == 'All Tasks') {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        vm.changeActiveTab = function () {
+            console.log('in change active');
+            tablinks = document.getElementsByClassName("tabButton");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+                console.log('in loop')
+            }
+            event.currentTarget.className += " active";
+
+        }
+        vm.getLists();
+    }])
