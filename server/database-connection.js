@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const databaseURL = 'mongodb://localhost:27017/tasklist';
+const databaseURL = process.env.MONGODB_URI || 'mongodb://localhost:27017/tasklist';
 mongoose.connect(databaseURL, {useNewUrlParser: true});
 mongoose.connection.on('connected', () => {
     console.log('Connected to database at: ', databaseURL);

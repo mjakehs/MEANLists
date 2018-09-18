@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const tasks = require('./modules/routes/task.router');
 const lists = require('./modules/routes/list.router');
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 require('./database-connection');
 
 
